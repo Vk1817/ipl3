@@ -8,10 +8,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<!-- SHAKA PLAYER -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
-
 <style>
 body{
   margin:0;
@@ -38,23 +34,19 @@ body{
   box-shadow:0 0 25px rgba(255,0,150,0.2);
 }
 
+/* ✅ FIXED VIDEO */
 .video{
   width:100%;
-  height:220px;
+  aspect-ratio:16/9;
   border-radius:16px;
   overflow:hidden;
   border:2px solid rgba(255,0,150,0.4);
 }
 
-.shaka-video-container{
+.video iframe{
   width:100%;
   height:100%;
-}
-
-video{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+  border:none;
 }
 
 /* LIVE */
@@ -129,16 +121,17 @@ video{
 
 <div class="player-card">
   <div class="video">
-    <div class="shaka-video-container" data-shaka-player>
-      <video id="video" autoplay muted playsinline></video>
-    </div>
+    <iframe 
+      src="https://allrounder-live2.pages.dev/channel/willow"
+      allowfullscreen 
+      allow="autoplay; encrypted-media">
+    </iframe>
   </div>
 </div>
 
 <div class="live-box">● LIVE</div>
 <div class="match-title">RCB vs SRH</div>
 
-<!-- AD -->
 <div class="ad-box">
   <a href="https://wa.me/447955881183" target="_blank">
     <img src="offstump.jpg" alt="Ad Banner">
@@ -155,42 +148,5 @@ video{
   <div class="value">1 of 74</div>
 </div>
 
-<script>
-async function initApp() {
-  shaka.polyfill.installAll();
-  if (shaka.Player.isBrowserSupported()) {
-    initPlayer();
-  }
-}
-
-async function initPlayer() {
-  const video = document.getElementById('video');
-  const container = document.querySelector('.shaka-video-container');
-  const player = new shaka.Player(video);
-
-  const ui = new shaka.ui.Overlay(player, container, video);
-
-  const streamUrl = "https://a96aivottlinear-a.akamaihd.net/OTTB/iad-nitro/live/clients/dash/enc/kksbtkclxn/out/v1/75ba74c3fa354297aa9327a31dfeb4d5/cenc.mpd";
-
-  player.configure({
-    drm: {
-      clearKeys: {
-        "4a3d50bef26a7b2acebfb719a2d02476": "f94f4e94b57e18e48450231b20222c0c"
-      }
-    }
-  });
-
-  try {
-    await player.load(streamUrl);
-    console.log("Stream loaded");
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initApp);
-</script>
-
 </body>
 </html>
-
